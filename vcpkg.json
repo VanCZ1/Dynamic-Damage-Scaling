@@ -1,0 +1,17 @@
+{
+  "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
+  "name": "dynamic-damage-scaling",
+  "version-string": "1.0.0",
+  "dependencies": [
+    "fmt",
+    "rapidcsv",
+    "spdlog",
+    "xbyak",
+    "directxmath",
+    "directxtk",
+    "nlohmann-json",
+    "simpleini",
+    "clib-util"
+  ],
+  "builtin-baseline": "44819aa2a6c10e56065e2b0330e7d6c89d1d2574"
+}

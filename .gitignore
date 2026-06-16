@@ -1,0 +1,13 @@
+# dot folders
+.idea/
+.vs/
+.vscode/
+.xmake/
+
+# folders
+/build*
+/out*
+/vs*
+
+# files
+*.zip
