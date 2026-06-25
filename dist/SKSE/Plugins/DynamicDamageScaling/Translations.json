@@ -2,6 +2,7 @@
   "Plugin": "Dynamic Damage Scaling",
   "Settings": "Settings",
   "Settings.Enable": "Enable Mod",
+  "Configs": "Configs",
   "Configs.ReloadAll": "Reload Configs",
   "Configs.Rules.Attacker": "Attacker",
   "Configs.Rules.Victim": "Victim",

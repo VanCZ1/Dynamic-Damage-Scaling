@@ -22,7 +22,7 @@ namespace UI
 				ImGuiMCP::TableSetupColumn(Trans("Configs.Rules.Victim"), ImGuiMCP::ImGuiTableColumnFlags_None);
 				ImGuiMCP::TableSetupColumn(Trans("Configs.Rules.Scaling"), ImGuiMCP::ImGuiTableColumnFlags_None);
 				ImGuiMCP::TableHeadersRow();
-				
+
 				// Green Highlight
 				constexpr ImGuiMCP::ImU32 matchHighlight = IM_COL32(150, 255, 50, 80);
 
@@ -52,7 +52,7 @@ namespace UI
 			}
 		}
 
-		void RenderConfigs()
+		void __stdcall RenderConfigs()
 		{
 			auto configs = Configs::GetSingleton();
 
@@ -80,8 +80,6 @@ namespace UI
 			if (ImGuiMCP::Checkbox(Trans("Settings.Enable"), &settings->isEnabled)) {
 				settings->Save();
 			}
-
-			RenderConfigs();
 		}
 	}
 
@@ -94,6 +92,7 @@ namespace UI
 
 		SKSEMenuFramework::SetSection(Trans("Plugin"));
 		SKSEMenuFramework::AddSectionItem(Trans("Settings"), RenderSettings);
+		SKSEMenuFramework::AddSectionItem(Trans("Configs"), RenderConfigs);
 		logger::info("SKSE Menu registered successfully.");
 	}
 }
