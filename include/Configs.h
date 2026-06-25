@@ -50,7 +50,7 @@ public:
 
 private:
 	void ParseConfigs();
-	ScalingConfig ParseSingleConfig(const std::filesystem::path& a_filepath);
+	ScalingConfig ParseSingleConfig(const std::filesystem::path& a_filePath);
 	void SortConfigs();
 
 	mutable std::shared_mutex configMutex;

@@ -231,17 +231,23 @@ float Configs::GetScaling(const RE::Actor* a_source, const RE::Actor* a_target) 
 {
 	std::shared_lock lock(configMutex);
 
-	// Only the last rule will be applied
-	for (auto config = scalingConfigs.rbegin(); config != scalingConfigs.rend(); ++config) {
-		for (auto rule = config->rules.rbegin(); rule != config->rules.rend(); ++rule) {
+	// For the same file: Only the last scaling will be applied
+	// For different files: All scaling will be multiplied
+	float result = 1.0f;
+	for (const auto& config : scalingConfigs) {
+		for (auto rule = config.rules.rbegin(); rule != config.rules.rend(); ++rule) {
 			if (Conditions::MatchConditions(rule->source, a_source) &&
 				Conditions::MatchConditions(rule->target, a_target)) {
-				return rule->scaling;
+				result *= rule->scaling;
+				if (result == 0.0f) {
+					return result;
+				}
+				break;
 			}
 		}
 	}
 
-	return 1.0f;
+	return std::clamp(result, kScalingMin, kScalingMax);
 }
 
 void Configs::ParseConfigs()
