@@ -16,6 +16,7 @@ namespace Conditions
 		kKeyword,
 		kSex,
 		kLevel,
+		kCommanded,
 
 		kTotal
 	};
@@ -31,7 +32,8 @@ namespace Conditions
 		"Faction"sv,
 		"Keyword"sv,
 		"Sex"sv,
-		"Level"sv
+		"Level"sv,
+		"Commanded"sv
 	};
 	static_assert(ConditionNames.size() == static_cast<std::size_t>(ConditionType::kTotal));
 
@@ -45,6 +47,38 @@ namespace Conditions
 	{
 		const auto it = std::find(ConditionNames.begin(), ConditionNames.end(), a_str);
 		return it == ConditionNames.end() ? ConditionType::kNone : static_cast<ConditionType>(std::distance(ConditionNames.begin(), it));
+	}
+
+	enum class SubConditionType : std::uint8_t
+	{
+		kNone,
+		kAll,
+		kPlayer,
+		kNPC,
+		kFollower,
+
+		kTotal
+	};
+
+	inline constexpr std::array SubConditionNames{
+		"None"sv,
+		"All"sv,
+		"Player"sv,
+		"NPC"sv,
+		"Follower"sv
+	};
+	static_assert(SubConditionNames.size() == static_cast<std::size_t>(SubConditionType::kTotal));
+
+	inline constexpr std::string_view GetSubConditionTypeName(const SubConditionType a_type)
+	{
+		return SubConditionNames.at(static_cast<int>(a_type));
+	}
+
+	template <typename T>
+	constexpr SubConditionType GetSubConditionType(const T& a_str)
+	{
+		const auto it = std::find(SubConditionNames.begin(), SubConditionNames.end(), a_str);
+		return it == SubConditionNames.end() ? SubConditionType::kNone : static_cast<SubConditionType>(std::distance(SubConditionNames.begin(), it));
 	}
 
 	template <typename T>
@@ -67,6 +101,7 @@ namespace Conditions
 	struct Condition
 	{
 		ConditionType type{ ConditionType::kNone };
+		SubConditionType subType{ SubConditionType::kNone };
 		std::string value;
 		bool negated{ false };
 

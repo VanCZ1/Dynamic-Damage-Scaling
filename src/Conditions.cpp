@@ -27,37 +27,100 @@ namespace Conditions
 			return RE::TESForm::LookupByEditorID(a_str);
 		}
 
-		Range<std::uint16_t> ResolveLevelRange(const std::string& a_value)
+		template <typename T>
+		Range<T> ResolveRange(const std::string& a_value)
 		{
-			constexpr std::uint16_t levelMin = std::numeric_limits<std::uint16_t>::min();
-			constexpr std::uint16_t levelMax = std::numeric_limits<std::uint16_t>::max();
-			constexpr Range<std::uint16_t> levelInvalid{ levelMax, levelMin };
+			constexpr T rangeMin = std::numeric_limits<T>::min();
+			constexpr T rangeMax = std::numeric_limits<T>::max();
+			constexpr Range<T> rangeInvalid{ rangeMax, rangeMin };
 
 			if (a_value.size() < 2 || a_value.front() != '(' || a_value.back() != ')') {
-				logger::warn("Invalid Level condition: {}", a_value);
-				return levelInvalid;
+				logger::warn("Invalid range condition: {}", a_value);
+				return rangeInvalid;
 			}
 
 			const std::string inner = a_value.substr(1, a_value.size() - 2);
-			const auto splitLevel = Utils::String::Split(inner, "/");
-			if (splitLevel.size() != 2) {
-				logger::warn("Invalid Level range: {}", a_value);
-				return levelInvalid;
+			const auto splitRange = Utils::String::Split(inner, "/");
+			if (splitRange.size() != 2) {
+				logger::warn("Invalid range: {}", a_value);
+				return rangeInvalid;
 			}
 
-			const auto toLevel = [](const std::string& str, std::uint16_t fallback) -> std::uint16_t {
+			const auto toNumber = [](const std::string& str, T fallback) -> T {
 				if (str.empty()) {
 					return fallback;
 				}
 				try {
-					return static_cast<std::uint16_t>(std::stoul(str));
+					return static_cast<T>(std::stoul(str));
 				} catch (const std::exception& e) {
-					logger::error("Invalid Level value: {}, {}", str, e.what());
+					logger::error("Invalid value: {}, {}", str, e.what());
 					return fallback;
 				}
 			};
 
-			return { toLevel(splitLevel[0], levelMin), toLevel(splitLevel[1], levelMax) };
+			return { toNumber(splitRange[0], rangeMin), toNumber(splitRange[1], rangeMax) };
+		}
+
+		void ParseSubCondition(Condition& a_condition, const std::string& a_value)
+		{
+			a_condition.subType = GetSubConditionType(a_value);
+			switch (a_condition.subType) {
+			case SubConditionType::kNone:
+				{
+					a_condition.formValue = ResolveForm(a_value);
+				}
+				break;
+			case SubConditionType::kAll:
+			case SubConditionType::kPlayer:
+			case SubConditionType::kNPC:
+			case SubConditionType::kFollower:
+				break;
+			default:
+				break;
+			}
+		}
+
+		bool MatchSubCondition(const Condition& a_condition, const RE::Actor* a_actor)
+		{
+			if (!a_actor) {
+				return false;
+			}
+
+			bool result = false;
+
+			switch (a_condition.subType) {
+			case SubConditionType::kNone:
+				{
+					if (const auto base = a_actor->GetActorBase()) {
+						result = base == a_condition.formValue;
+					}
+				}
+				break;
+			case SubConditionType::kAll:
+				{
+					result = true;
+				}
+				break;
+			case SubConditionType::kPlayer:
+				{
+					result = a_actor->IsPlayerRef();
+				}
+				break;
+			case SubConditionType::kNPC:
+				{
+					result = !a_actor->IsPlayerRef();
+				}
+				break;
+			case SubConditionType::kFollower:
+				{
+					result = a_actor->IsPlayerTeammate();
+				}
+				break;
+			default:
+				break;
+			}
+
+			return result;
 		}
 
 		Condition ParseSingleCondition(std::string a_str)
@@ -125,7 +188,12 @@ namespace Conditions
 				break;
 			case ConditionType::kLevel:
 				{
-					condition.levelRange = ResolveLevelRange(valueStr);
+					condition.levelRange = ResolveRange<std::uint16_t>(valueStr);
+				}
+				break;
+			case ConditionType::kCommanded:
+				{
+					ParseSubCondition(condition, valueStr);
 				}
 				break;
 			default:
@@ -171,12 +239,8 @@ namespace Conditions
 				break;
 			case ConditionType::kID:
 				{
-					if (a_condition.formValue) {
-						const auto formID = a_condition.formValue->GetFormID();
-						if (const auto base = a_actor->GetActorBase()) {
-							const auto baseID = base->GetFormID();
-							result = baseID == formID;
-						}
+					if (const auto base = a_actor->GetActorBase()) {
+						result = base == a_condition.formValue;
 					}
 				}
 				break;
@@ -212,6 +276,14 @@ namespace Conditions
 				{
 					const auto& range = a_condition.levelRange;
 					result = range.IsValid() && range.Contains(a_actor->GetLevel());
+				}
+				break;
+			case ConditionType::kCommanded:
+				{
+					const auto commander = a_actor->GetCommandingActor().get();
+					if (commander) {
+						result = MatchSubCondition(a_condition, commander);
+					}
 				}
 				break;
 			default:
