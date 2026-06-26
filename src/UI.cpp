@@ -1,6 +1,7 @@
 #include "UI.h"
 #include "Configs.h"
 #include "Settings.h"
+#include "ConditionCache.h"
 #include "Translations.h"
 
 #include "API/SKSEMenuFramework.h"
@@ -73,6 +74,7 @@ namespace UI
 
 			ImGuiMCP::Separator();
 
+			ConditionCache::GetSingleton().Reset();
 			const auto consoleRefr = RE::Console::GetSelectedRef();
 			const auto consoleActor = consoleRefr ? consoleRefr->As<RE::Actor>() : nullptr;
 			configs->ForEachConfigs([&](std::size_t i, const ScalingConfig& config) {

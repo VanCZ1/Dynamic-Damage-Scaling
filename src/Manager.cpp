@@ -6,7 +6,7 @@ namespace Manager
 {
 	namespace
 	{
-		float CalculateFinalDamage(const RE::Actor* a_source, const RE::Actor* a_target, float a_damage)
+		float CalcFinalDamage(const RE::Actor* a_source, const RE::Actor* a_target, float a_damage)
 		{
 			if (!a_source || !a_target) {
 				return a_damage;
@@ -34,7 +34,7 @@ namespace Manager
 		const auto aggressor = a_hitData->aggressor.get().get();
 		const auto target = a_hitData->target.get().get();
 		const auto damage = a_hitData->totalDamage;
-		a_hitData->totalDamage = CalculateFinalDamage(aggressor, target, damage);
+		a_hitData->totalDamage = CalcFinalDamage(aggressor, target, damage);
 	}
 
 	void MagicDamage::ApplyScaling(RE::ActiveEffect* a_activeEffect)
@@ -49,14 +49,14 @@ namespace Manager
 				const auto caster = a_activeEffect->GetCasterActor().get();
 				const auto target = skyrim_cast<RE::Actor*>(magicTarget);
 				const auto damage = -a_activeEffect->magnitude;
-				a_activeEffect->magnitude = -CalculateFinalDamage(caster, target, damage);
+				a_activeEffect->magnitude = -CalcFinalDamage(caster, target, damage);
 			}
 		}
 	}
 
 	float ReflectDamage::ApplyScaling(RE::Actor* a_source, RE::Actor* a_target, float a_damage)
 	{
-		return CalculateFinalDamage(a_source, a_target, a_damage);
+		return CalcFinalDamage(a_source, a_target, a_damage);
 	}
 
 	bool HandleBeenAttacked::CanIgnoreAttack(RE::Actor* a_source, RE::Actor* a_target)

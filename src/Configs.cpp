@@ -1,5 +1,6 @@
 #include "Configs.h"
 #include "Parser.h"
+#include "ConditionCache.h"
 
 namespace
 {
@@ -233,6 +234,7 @@ float Configs::GetScaling(const RE::Actor* a_source, const RE::Actor* a_target) 
 
 	// For the same file: Only the last scaling will be applied
 	// For different files: All scaling will be multiplied
+	ConditionCache::GetSingleton().Reset();
 	float result = 1.0f;
 	for (const auto& config : scalingConfigs) {
 		for (auto rule = config.rules.rbegin(); rule != config.rules.rend(); ++rule) {

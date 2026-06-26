@@ -87,5 +87,23 @@ namespace Utils
 
 			return a_activeEffect->magnitude < 0.0f;
 		}
+
+		int CalcFollowerCount()
+		{
+			const auto processLists = RE::ProcessLists::GetSingleton();
+			if (!processLists) {
+				return 0;
+			}
+
+			int result = 0;
+			for (const auto& handle : processLists->highActorHandles) {
+				const auto actor = handle.get().get();
+				if (actor && actor->IsPlayerTeammate()) {
+					++result;
+				}
+			}
+
+			return result;
+		}
 	}
 }

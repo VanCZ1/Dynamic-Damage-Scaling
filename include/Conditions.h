@@ -17,6 +17,7 @@ namespace Conditions
 		kSex,
 		kLevel,
 		kCommanded,
+		kFollowerCount,
 
 		kTotal
 	};
@@ -33,7 +34,8 @@ namespace Conditions
 		"Keyword"sv,
 		"Sex"sv,
 		"Level"sv,
-		"Commanded"sv
+		"Commanded"sv,
+		"FollowerCount"sv
 	};
 	static_assert(ConditionNames.size() == static_cast<std::size_t>(ConditionType::kTotal));
 
@@ -110,6 +112,7 @@ namespace Conditions
 		RE::BGSKeyword* keywordValue{ nullptr };
 		RE::SEX sexValue{ RE::SEX::kNone };
 		Range<std::uint16_t> levelRange;
+		Range<int> followerRange;
 	};
 
 	std::vector<Condition> ParseConditions(const std::string& a_entry);

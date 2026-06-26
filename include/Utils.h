@@ -13,5 +13,6 @@ namespace Utils
 	{
 		RE::TESForm* LookupForm(RE::FormID a_formID, std::string_view a_modName);
 		bool IsDamagingMagic(const RE::ActiveEffect* a_activeEffect);
+		int CalcFollowerCount();
 	}
 }

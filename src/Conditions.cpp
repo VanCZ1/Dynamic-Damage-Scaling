@@ -1,4 +1,5 @@
 #include "Conditions.h"
+#include "ConditionCache.h"
 #include "Utils.h"
 
 namespace Conditions
@@ -51,7 +52,11 @@ namespace Conditions
 					return fallback;
 				}
 				try {
-					return static_cast<T>(std::stoul(str));
+					if constexpr (std::is_floating_point_v<T>) {
+						return static_cast<T>(std::stof(str));
+					} else {
+						return static_cast<T>(std::stoul(str));
+					}
 				} catch (const std::exception& e) {
 					logger::error("Invalid value: {}, {}", str, e.what());
 					return fallback;
@@ -196,6 +201,11 @@ namespace Conditions
 					ParseSubCondition(condition, valueStr);
 				}
 				break;
+			case ConditionType::kFollowerCount:
+				{
+					condition.followerRange = ResolveRange<int>(valueStr);
+				}
+				break;
 			default:
 				break;
 			}
@@ -284,6 +294,12 @@ namespace Conditions
 					if (commander) {
 						result = MatchSubCondition(a_condition, commander);
 					}
+				}
+				break;
+			case ConditionType::kFollowerCount:
+				{
+					const auto& range = a_condition.followerRange;
+					result = range.IsValid() && range.Contains(ConditionCache::GetSingleton().GetFollowerCount());
 				}
 				break;
 			default:
