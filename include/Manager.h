@@ -19,4 +19,10 @@ namespace Manager
 	public:
 		static float ApplyScaling(RE::Actor* a_source, RE::Actor* a_target, float a_damage);
 	};
+
+	class HandleBeenAttacked
+	{
+	public:
+		static bool CanIgnoreAttack(RE::Actor* a_source, RE::Actor* a_target);
+	};
 }

@@ -12,6 +12,7 @@ void Settings::Load()
 	}
 
 	isEnabled = ini.GetBoolValue("General", "Enabled", isEnabled);
+	isIgnoreAttack = ini.GetBoolValue("General", "IgnoreAttack", isIgnoreAttack);
 
 	logger::info("Settings loaded.");
 }
@@ -22,6 +23,7 @@ void Settings::Save()
 	ini.SetUnicode();
 	
 	ini.SetBoolValue("General", "Enabled", isEnabled);
+	ini.SetBoolValue("General", "IgnoreAttack", isIgnoreAttack);
 
 	const auto rc = ini.SaveFile(settingPath);
 	if (rc < 0) {
@@ -35,5 +37,6 @@ void Settings::Save()
 void Settings::Reset()
 {
 	isEnabled = true;
+	isIgnoreAttack = true;
 	Save();
 }

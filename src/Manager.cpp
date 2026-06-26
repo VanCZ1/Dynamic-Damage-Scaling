@@ -58,4 +58,18 @@ namespace Manager
 	{
 		return CalculateFinalDamage(a_source, a_target, a_damage);
 	}
+
+	bool HandleBeenAttacked::CanIgnoreAttack(RE::Actor* a_source, RE::Actor* a_target)
+	{
+		if (!a_source || !a_target) {
+			return false;
+		}
+
+		auto scaling = Configs::GetSingleton()->GetScaling(a_source, a_target);
+		if (scaling == 0.0f) {
+			return true;
+		}
+
+		return false;
+	}
 }

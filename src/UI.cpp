@@ -9,6 +9,17 @@ namespace UI
 {
 	namespace
 	{
+		void HelpMarker(const char* a_str)
+		{
+			ImGuiMCP::SameLine();
+			ImGuiMCP::TextDisabled("(?)");
+			if (ImGuiMCP::IsItemHovered()) {
+				ImGuiMCP::BeginTooltip();
+				ImGuiMCP::TextUnformatted(a_str);
+				ImGuiMCP::EndTooltip();
+			}
+		}
+
 		void RenderSingleConfig(const ScalingConfig& a_config, const RE::Actor* a_actor)
 		{
 			const ImGuiMCP::ImGuiTableFlags tableFlags =
@@ -80,6 +91,11 @@ namespace UI
 			if (ImGuiMCP::Checkbox(Trans("Settings.Enable"), &settings->isEnabled)) {
 				settings->Save();
 			}
+
+			if (ImGuiMCP::Checkbox(Trans("Settings.IgnoreAttack"), &settings->isIgnoreAttack)) {
+				settings->Save();
+			}
+			HelpMarker(Trans("Settings.IgnoreAttack.Desc"));
 		}
 	}
 

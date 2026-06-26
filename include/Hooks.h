@@ -73,4 +73,14 @@ namespace Hooks
 		static bool Thunk(RE::Actor* a_target, float a_healthDamage, RE::Actor* a_source, bool a_dontAdjustDifficulty);
 		static inline REL::Relocation<decltype(Thunk)> originalFunction;
 	};
+
+	class HandleBeenAttacked
+	{
+	public:
+		static void Install();
+
+	private:
+		static void Thunk(RE::Actor* a_victim, RE::Actor* a_aggressor, void* a_unk3, std::uint32_t a_unk4);
+		static inline REL::Relocation<decltype(Thunk)> originalFunction;
+	};
 }

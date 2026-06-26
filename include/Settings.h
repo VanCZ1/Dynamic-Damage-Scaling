@@ -8,6 +8,7 @@ public:
 	void Reset();
 
 	bool isEnabled{ true };
+	bool isIgnoreAttack{ true };
 
 private:
 	static inline constexpr auto settingPath{ "Data/SKSE/Plugins/DynamicDamageScaling/Settings.ini" };

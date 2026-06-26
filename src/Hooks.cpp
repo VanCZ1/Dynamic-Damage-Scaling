@@ -8,7 +8,7 @@ namespace Hooks
 	{
 		// Don't need: trap damage, environmental damage
 		logger::info("Installing hooks...");
-		SKSE::AllocTrampoline(98);
+		SKSE::AllocTrampoline(140);
 		MeleeDamage::Install();
 		ArrowDamage::Install();
 		AbstractDamage::Install();
@@ -16,6 +16,7 @@ namespace Hooks
 		CollisionDamage::Install();
 		MagicDamage::Install();
 		ReflectDamage::Install();
+		HandleBeenAttacked::Install();
 		logger::info("Hooks installed successfully.");
 	}
 
@@ -129,5 +130,29 @@ namespace Hooks
 		}
 
 		return originalFunction(a_target, a_healthDamage, a_source, a_dontAdjustDifficulty);
+	}
+
+	void HandleBeenAttacked::Install()
+	{
+		REL::Relocation<std::uintptr_t> target1{ RELOCATION_ID(33559, 34335), REL::VariantOffset(0x19A, 0x19A, 0x1A4) };
+		REL::Relocation<std::uintptr_t> target2{ RELOCATION_ID(36016, 36991), REL::VariantOffset(0x1E91, 0x23DE, 0x1EED) };
+		REL::Relocation<std::uintptr_t> target3{ RELOCATION_ID(37633, 38586), REL::VariantOffset(0xE39, 0x1062, 0xE62) };
+
+		auto& trampoline = SKSE::GetTrampoline();
+		originalFunction = trampoline.write_call<5>(target1.address(), Thunk);
+		originalFunction = trampoline.write_call<5>(target2.address(), Thunk);
+		originalFunction = trampoline.write_call<5>(target3.address(), Thunk);
+	}
+
+	void HandleBeenAttacked::Thunk(RE::Actor* a_victim, RE::Actor* a_aggressor, void* a_unk3, std::uint32_t a_unk4)
+	{
+		auto settings = Settings::GetSingleton();
+		if (settings->isEnabled && settings->isIgnoreAttack) {
+			if (Manager::HandleBeenAttacked::CanIgnoreAttack(a_aggressor, a_victim)) {
+				return;
+			}
+		}
+
+		originalFunction(a_victim, a_aggressor, a_unk3, a_unk4);
 	}
 }
