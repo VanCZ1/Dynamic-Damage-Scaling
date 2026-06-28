@@ -74,7 +74,7 @@ namespace UI
 
 			ImGuiMCP::Separator();
 
-			ConditionCache::GetSingleton().Reset();
+			ConditionCache::Reset();
 			const auto consoleRefr = RE::Console::GetSelectedRef();
 			const auto consoleActor = consoleRefr ? consoleRefr->As<RE::Actor>() : nullptr;
 			configs->ForEachConfigs([&](std::size_t i, const ScalingConfig& config) {

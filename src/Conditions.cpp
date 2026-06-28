@@ -299,7 +299,7 @@ namespace Conditions
 			case ConditionType::kFollowerCount:
 				{
 					const auto& range = a_condition.followerRange;
-					result = range.IsValid() && range.Contains(ConditionCache::GetSingleton().GetFollowerCount());
+					result = range.IsValid() && range.Contains(ConditionCache::GetFollowerCount());
 				}
 				break;
 			default:

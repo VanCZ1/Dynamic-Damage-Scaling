@@ -1,22 +1,27 @@
 #include "ConditionCache.h"
 #include "Utils.h"
 
-ConditionCache& ConditionCache::GetSingleton()
+namespace ConditionCache
 {
-	thread_local ConditionCache singleton;
-	return singleton;
-}
-
-void ConditionCache::Reset()
-{
-	cache = {};
-}
-
-int ConditionCache::GetFollowerCount()
-{
-	if (!cache.followerCount) {
-		cache.followerCount = Utils::Game::CalcFollowerCount();
+	namespace
+	{
+		struct Data
+		{
+			std::optional<int> followerCount;
+		};
+		thread_local Data data;
 	}
 
-	return *cache.followerCount;
+	void Reset()
+	{
+		data = {};
+	}
+
+	int GetFollowerCount()
+	{
+		if (!data.followerCount) {
+			data.followerCount = Utils::Game::CalcFollowerCount();
+		}
+		return *data.followerCount;
+	}
 }
