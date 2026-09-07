@@ -6,6 +6,38 @@
 #include "Translations.h"
 #include "UI.h"
 
+namespace
+{
+	void Load()
+	{
+		Settings::GetSingleton()->Load();
+		Translations::GetSingleton()->Load();
+	}
+
+	void MessageHandler(SKSE::MessagingInterface::Message* a_msg)
+	{
+		switch (a_msg->type) {
+		case SKSE::MessagingInterface::kDataLoaded:
+			{
+				Configs::GetSingleton()->Load();
+			}
+			break;
+		case SKSE::MessagingInterface::kPostLoad:
+			{
+				Hooks::Install();
+				UI::Register();
+			}
+			break;
+		case SKSE::MessagingInterface::kPostPostLoad:
+			break;
+		case SKSE::MessagingInterface::kPreLoadGame:
+			break;
+		case SKSE::MessagingInterface::kPostLoadGame:
+			break;
+		}
+	}
+}
+
 SKSEPluginInfo(
 	.Version = REL::Version{ Version::MAJOR, Version::MINOR, Version::PATCH },
 	.Name = Version::PROJECT,
@@ -15,38 +47,7 @@ SKSEPluginInfo(
 	.RuntimeCompatibility = SKSE::VersionIndependence::AddressLibrary
 )
 
-void Load()
-{
-	Settings::GetSingleton()->Load();
-	Translations::GetSingleton()->Load();
-}
-
-void MessageHandler(SKSE::MessagingInterface::Message* a_msg)
-{
-	switch (a_msg->type) {
-	case SKSE::MessagingInterface::kDataLoaded:
-		{
-			Configs::GetSingleton()->Load();
-		}
-		break;
-	case SKSE::MessagingInterface::kPostLoad:
-		{
-			Hooks::Install();
-			UI::Register();
-		}
-		break;
-	case SKSE::MessagingInterface::kPostPostLoad:
-		break;
-	case SKSE::MessagingInterface::kPreLoadGame:
-		break;
-	case SKSE::MessagingInterface::kPostLoadGame:
-        break;
-	case SKSE::MessagingInterface::kNewGame:
-		break;
-	}
-}
-
-SKSEPluginLoad(const SKSE::LoadInterface *a_skse) {
+SKSEPluginLoad(const SKSE::LoadInterface* a_skse) {
 	SKSE::Init(a_skse);
 	
 	SetupLog();

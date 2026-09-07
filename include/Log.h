@@ -2,13 +2,13 @@
 
 inline void SetupLog()
 {
-	auto logFolder = SKSE::log::log_directory();
+	const auto logFolder = SKSE::log::log_directory();
 	if (!logFolder) {
 		SKSE::stl::report_and_fail("Failed to find standard logging directory."sv);
 	}
 
-	auto pluginName = SKSE::PluginDeclaration::GetSingleton()->GetName();
-	auto logPath = *logFolder / std::format("{}.log", pluginName);
+	const auto pluginName = SKSE::PluginDeclaration::GetSingleton()->GetName();
+	const auto logPath = *logFolder / std::format("{}.log", pluginName);
 	auto sink = std::make_shared<spdlog::sinks::basic_file_sink_mt>(logPath.string(), true);
 	auto log = std::make_shared<spdlog::logger>("log", std::move(sink));
 

@@ -33,6 +33,7 @@ const char* Translations::Get(std::string_view a_key)
 		return it->second.c_str();
 	}
 	
-	constexpr const char* defaultTrans = "missing translation";
-	return defaultTrans;
+	logger::warn("Missing translation key: {}", a_key);
+	auto [iterator, inserted] = transTable.try_emplace(std::string(a_key), std::string(a_key));
+	return iterator->second.c_str();
 }

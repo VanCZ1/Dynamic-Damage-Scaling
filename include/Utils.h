@@ -4,15 +4,15 @@ namespace Utils
 {
 	namespace String
 	{
-		std::string Trim(const std::string& a_str);
-		std::vector<std::string> Split(const std::string& a_str, std::string_view a_delimiter);
-		std::string ToLower(std::string_view a_str);
+		[[nodiscard]] std::string Trim(const std::string& a_str);
+		[[nodiscard]] std::vector<std::string> Split(const std::string& a_str, std::string_view a_delimiter);
+		[[nodiscard]] std::string ToLower(std::string_view a_str);
 	}
 	
 	namespace Game
 	{
-		RE::TESForm* LookupForm(RE::FormID a_formID, std::string_view a_modName);
-		bool IsDamagingMagic(const RE::ActiveEffect* a_activeEffect);
-		int CalcFollowerCount();
+		[[nodiscard]] RE::TESForm* LookupForm(RE::FormID a_formID, std::string_view a_modName);
+		[[nodiscard]] bool IsDamagingMagic(const RE::ActiveEffect* a_activeEffect);
+		[[nodiscard]] int CalcFollowerCount();
 	}
 }
