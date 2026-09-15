@@ -1,6 +1,6 @@
 # Dynamic-Damage-Scaling
 An SKSE plugin that allows users to customize the damage scaling.
-Built with [CommonLibSSE-NG](https://github.com/alandtse/CommonLibVR).
+Built with [CommonLibSSE-NG](https://github.com/alandtse/CommonLibSSE-NG).
 
 # Requirements
 * [Visual Studio Community 2022](https://visualstudio.microsoft.com/)
