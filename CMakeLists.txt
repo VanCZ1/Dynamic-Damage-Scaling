@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.21)
 set(NAME "DynamicDamageScaling")
-set(VERSION 1.2.1)
+set(VERSION 2.0.0)
 set(LICENSE "GPL-3.0 License")
 
 # -------------------------------------------------- #
