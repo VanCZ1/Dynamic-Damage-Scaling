@@ -200,7 +200,7 @@ namespace Hooks
 	{
 		// Don't need: trap damage, environmental damage
 		logger::info("Installing hooks...");
-		SKSE::AllocTrampoline(140);
+		SKSE::AllocTrampoline(112);
 		MeleeDamage::Install();
 		ArrowDamage::Install();
 		AbstractDamage::Install();

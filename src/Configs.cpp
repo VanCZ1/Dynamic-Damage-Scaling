@@ -4,7 +4,7 @@
 
 namespace
 {
-	constexpr const char* kRuleKey = "Damage";
+	constexpr std::string_view kRuleKey = "Damage";
 	constexpr float kScalingMin = 0.0f;
 	constexpr float kScalingMax = 10000.0f;
 
@@ -148,7 +148,7 @@ void Configs::SaveConfigFile(const ScalingConfig& a_config)
 			SerializeConditions(rule.source),
 			SerializeConditions(rule.target),
 			rule.scaling);
-		ini.SetValue("", kRuleKey, value.c_str(), rule.comment.empty() ? nullptr : rule.comment.c_str(), false);
+		ini.SetValue("", kRuleKey.data(), value.c_str(), rule.comment.empty() ? nullptr : rule.comment.c_str(), false);
 	}
 
 	if (ini.SaveFile(filePath.string().c_str()) < 0) {
