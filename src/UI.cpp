@@ -72,6 +72,31 @@ namespace UI
 				configs->Reload();
 			}
 
+			ImGuiMCP::SameLine();
+			const auto explanationTitle = std::format("{}###Explanation", Trans("Configs.Explanation.Title"));
+			if (ImGuiMCP::Button(Trans("Configs.Explanation"))) {
+				ImGuiMCP::OpenPopup(explanationTitle.c_str());
+			}
+			const auto viewport = ImGuiMCP::GetMainViewport();
+			const ImGuiMCP::ImVec2 explanationWindowSize{ std::max(1.0f, viewport->WorkSize.x * 0.4f), std::max(1.0f, viewport->WorkSize.y * 0.4f) };
+			ImGuiMCP::SetNextWindowSize(explanationWindowSize, ImGuiMCP::ImGuiCond_FirstUseEver);
+			ImGuiMCP::SetNextWindowPos({ viewport->WorkPos.x + viewport->WorkSize.x * 0.5f, viewport->WorkPos.y + viewport->WorkSize.y * 0.5f }, ImGuiMCP::ImGuiCond_Appearing, { 0.5f, 0.5f });
+			if (ImGuiMCP::BeginPopupModal(explanationTitle.c_str())) {
+				if (ImGuiMCP::BeginChild("ExplanationContent", { 0.0f, -ImGuiMCP::GetFrameHeightWithSpacing() })) {
+					ImGuiMCP::PushTextWrapPos();
+					ImGuiMCP::TextUnformatted(Trans("Configs.Explanation.Content1"));
+					ImGuiMCP::TextUnformatted(Trans("Configs.Explanation.Content2"));
+					ImGuiMCP::TextUnformatted(Trans("Configs.Explanation.Content3"));
+					ImGuiMCP::PopTextWrapPos();
+				}
+				ImGuiMCP::EndChild();
+
+				if (ImGuiMCP::Button(Trans("Configs.Explanation.Confirm"))) {
+					ImGuiMCP::CloseCurrentPopup();
+				}
+				ImGuiMCP::EndPopup();
+			}
+
 			ImGuiMCP::Separator();
 
 			ConditionCache::Reset();

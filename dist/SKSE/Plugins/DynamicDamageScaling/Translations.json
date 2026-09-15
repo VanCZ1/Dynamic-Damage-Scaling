@@ -6,6 +6,12 @@
   "Settings.IgnoreAttack.Desc": "When scaling is 0, the target does not show hostility.",
   "Configs": "Configs",
   "Configs.ReloadAll": "Reload Configs",
+  "Configs.Explanation": "Show Explanation",
+  "Configs.Explanation.Title": "Explanation",
+  "Configs.Explanation.Confirm": "OK",
+  "Configs.Explanation.Content1": "1. Rule: Damage = Attacker|Victim|Scaling. Damage scaling ranges from 0.0 to 10000.0.",
+  "Configs.Explanation.Content2": "2. Within one file, only the last matching rule applies. Across different files, the applicable multipliers are multiplied together.",
+  "Configs.Explanation.Content3": "3. Open the console and select the actor. The conditions that match this actor will be highlighted.",
   "Configs.Rules.Attacker": "Attacker",
   "Configs.Rules.Victim": "Victim",
   "Configs.Rules.Scaling": "Scaling"
