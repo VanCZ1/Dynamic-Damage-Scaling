@@ -73,8 +73,8 @@ namespace Conditions
 			case SubConditionType::kNone:
 				{
 					a_condition.formValue = ResolveForm(a_value);
+					break;
 				}
-				break;
 			case SubConditionType::kAll:
 			case SubConditionType::kPlayer:
 			case SubConditionType::kNPC:
@@ -99,28 +99,28 @@ namespace Conditions
 					if (const auto base = a_actor->GetActorBase()) {
 						result = base == a_condition.formValue;
 					}
+					break;
 				}
-				break;
 			case SubConditionType::kAll:
 				{
 					result = true;
+					break;
 				}
-				break;
 			case SubConditionType::kPlayer:
 				{
 					result = a_actor->IsPlayerRef();
+					break;
 				}
-				break;
 			case SubConditionType::kNPC:
 				{
 					result = !a_actor->IsPlayerRef();
+					break;
 				}
-				break;
 			case SubConditionType::kFollower:
 				{
 					result = a_actor->IsPlayerTeammate();
+					break;
 				}
-				break;
 			default:
 				break;
 			}
@@ -157,8 +157,8 @@ namespace Conditions
 			case ConditionType::kNone:
 				{
 					logger::warn("Invalid condition type: {}", typeStr);
+					break;
 				}
-				break;
 			case ConditionType::kAll:
 			case ConditionType::kPlayer:
 			case ConditionType::kNPC:
@@ -168,20 +168,20 @@ namespace Conditions
 			case ConditionType::kRace:
 				{
 					condition.formValue = ResolveForm(valueStr);
+					break;
 				}
-				break;
 			case ConditionType::kFaction:
 				{
 					condition.formValue = ResolveForm(valueStr);
 					condition.factionValue = condition.formValue ? condition.formValue->As<RE::TESFaction>() : nullptr;
+					break;
 				}
-				break;
 			case ConditionType::kKeyword:
 				{
 					condition.formValue = ResolveForm(valueStr);
 					condition.keywordValue = condition.formValue ? condition.formValue->As<RE::BGSKeyword>() : nullptr;
+					break;
 				}
-				break;
 			case ConditionType::kSex:
 				{
 					if (valueStr == "Male"sv) {
@@ -189,23 +189,23 @@ namespace Conditions
 					} else if (valueStr == "Female"sv) {
 						condition.sexValue = RE::SEX::kFemale;
 					}
+					break;
 				}
-				break;
 			case ConditionType::kLevel:
 				{
 					condition.levelRange = ResolveRange<std::uint16_t>(valueStr);
+					break;
 				}
-				break;
 			case ConditionType::kCommanded:
 				{
 					ParseSubCondition(condition, valueStr);
+					break;
 				}
-				break;
 			case ConditionType::kFollowerCount:
 				{
 					condition.followerRange = ResolveRange<int>(valueStr);
+					break;
 				}
-				break;
 			default:
 				break;
 			}
@@ -225,83 +225,83 @@ namespace Conditions
 			case ConditionType::kNone:
 				{
 					return false;
+					break;
 				}
-				break;
 			case ConditionType::kAll:
 				{
 					result = true;
+					break;
 				}
-				break;
 			case ConditionType::kPlayer:
 				{
 					result = a_actor->IsPlayerRef();
+					break;
 				}
-				break;
 			case ConditionType::kNPC:
 				{
 					result = !a_actor->IsPlayerRef();
+					break;
 				}
-				break;
 			case ConditionType::kFollower:
 				{
 					result = a_actor->IsPlayerTeammate();
+					break;
 				}
-				break;
 			case ConditionType::kID:
 				{
 					if (const auto base = a_actor->GetActorBase()) {
 						result = base == a_condition.formValue;
 					}
+					break;
 				}
-				break;
 			case ConditionType::kRace:
 				{
 					if (const auto race = a_actor->GetRace()) {
 						result = race == a_condition.formValue;
 					}
+					break;
 				}
-				break;
 			case ConditionType::kFaction:
 				{
 					if (a_condition.factionValue) {
 						result = a_actor->IsInFaction(a_condition.factionValue);
 					}
+					break;
 				}
-				break;
 			case ConditionType::kKeyword:
 				{
 					if (a_condition.keywordValue) {
 						result = a_actor->HasKeyword(a_condition.keywordValue);
 					}
+					break;
 				}
-				break;
 			case ConditionType::kSex:
 				{
 					if (const auto base = a_actor->GetActorBase()) {
 						result = base->GetSex() == a_condition.sexValue;
 					}
+					break;
 				}
-				break;
 			case ConditionType::kLevel:
 				{
 					const auto& range = a_condition.levelRange;
 					result = range.IsValid() && range.Contains(a_actor->GetLevel());
+					break;
 				}
-				break;
 			case ConditionType::kCommanded:
 				{
 					const auto commander = a_actor->GetCommandingActor().get();
 					if (commander) {
 						result = MatchSubCondition(a_condition, commander);
 					}
+					break;
 				}
-				break;
 			case ConditionType::kFollowerCount:
 				{
 					const auto& range = a_condition.followerRange;
 					result = range.IsValid() && range.Contains(ConditionCache::GetFollowerCount());
+					break;
 				}
-				break;
 			default:
 				break;
 			}

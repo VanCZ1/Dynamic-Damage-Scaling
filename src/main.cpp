@@ -20,14 +20,14 @@ namespace
 		case SKSE::MessagingInterface::kDataLoaded:
 			{
 				Configs::GetSingleton()->Load();
+				break;
 			}
-			break;
 		case SKSE::MessagingInterface::kPostLoad:
 			{
 				Hooks::Install();
 				UI::Register();
+				break;
 			}
-			break;
 		case SKSE::MessagingInterface::kPostPostLoad:
 			break;
 		case SKSE::MessagingInterface::kPreLoadGame:
