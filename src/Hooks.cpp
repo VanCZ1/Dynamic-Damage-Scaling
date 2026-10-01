@@ -200,7 +200,7 @@ namespace Hooks
 	{
 		// This could be all types of damage
 		// Hit damage includes trap, melee, arrow, abstract, explosion, collision
-		// These are not damage caused by other actors
+		// These and other direct modifications to actorValue are not damage caused by other actors
 		/*REL::Relocation<std::uintptr_t> moveFallDamage{ RELOCATION_ID(36973, 37998), REL::VariantOffset(0xCE, 0xC7, 0xCE) };
 		REL::Relocation<std::uintptr_t> ragdollFallDamage{ RELOCATION_ID(36346, 37336), REL::VariantOffset(0x53, 0x53, 0x53) };
 		REL::Relocation<std::uintptr_t> playerDrowningDamage{ RELOCATION_ID(36357, 37348), REL::VariantOffset(0x8A3, 0x8EE, 0x8A3) };
