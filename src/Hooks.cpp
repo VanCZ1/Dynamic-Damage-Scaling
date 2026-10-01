@@ -55,7 +55,7 @@ namespace Hooks
 	public:
 		static void Install()
 		{
-			REL::Relocation<std::uintptr_t> target{ RELOCATION_ID(42834, 44003), REL::VariantOffset(0x8D, 0x8D, 0x8D) };
+			REL::Relocation<std::uintptr_t> target{ REL::VariantID(42834, 44003, 0x76D970), REL::VariantOffset(0x8D, 0x8D, 0x8D) };
 			auto& trampoline = SKSE::GetTrampoline();
 			originalFunction = trampoline.write_branch<5>(target.address(), Thunk);
 		}
@@ -78,7 +78,7 @@ namespace Hooks
 	public:
 		static void Install()
 		{
-			REL::Relocation<std::uintptr_t> target{ RELOCATION_ID(42835, 44004), REL::VariantOffset(0xD5, 0xDD, 0xD5) };
+			REL::Relocation<std::uintptr_t> target{ REL::VariantID(42835, 44004, 0x76DA10), REL::VariantOffset(0xD5, 0xDD, 0xD5) };
 			auto& trampoline = SKSE::GetTrampoline();
 			originalFunction = trampoline.write_branch<5>(target.address(), Thunk);
 		}
@@ -101,7 +101,7 @@ namespace Hooks
 	public:
 		static void Install()
 		{
-			REL::Relocation<std::uintptr_t> target{ RELOCATION_ID(42836, 44005), REL::VariantOffset(0x17E, 0x178, 0x17E) };
+			REL::Relocation<std::uintptr_t> target{ REL::VariantID(42836, 44005, 0x76DAF0), REL::VariantOffset(0x17E, 0x178, 0x17E) };
 			auto& trampoline = SKSE::GetTrampoline();
 			originalFunction = trampoline.write_branch<5>(target.address(), Thunk);
 		}
